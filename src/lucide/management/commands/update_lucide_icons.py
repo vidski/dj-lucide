@@ -8,11 +8,11 @@ class Command(BaseCommand):
     help = "Download the latest Lucide icons and update the local zip file."
 
     def handle(self, *args, **options):
-        # Finde das Projekt-Root
+        # Find the root directory of the project
         root_dir = settings.BASE_DIR if hasattr(settings, "BASE_DIR") else os.getcwd()
         output_path = os.path.join(root_dir, "lucide-latest.zip")
 
-        # Hole die neueste Version von GitHub
+        # Check if the output path is writable
         import requests
         api_url = "https://api.github.com/repos/lucide-icons/lucide/releases/latest"
         r = requests.get(api_url)
