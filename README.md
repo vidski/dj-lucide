@@ -186,6 +186,32 @@ That icon again, but with the paths changed to a narrower stroke width, and a "d
     {{ lucide("a-arrow-down", stroke_width=1, data_controller="language") }}
 ```
 
+### Use the Latest Lucide Icons (Custom Update & ZIP Selection)
+
+By default, this package uses the Lucide icon ZIP file bundled within the package.
+**You can now easily update to the latest Lucide icons at any time—without waiting for a package release.**
+
+**Updating to the Latest Icons**
+
+A management command is provided to fetch the newest icons and save them to your project’s root folder.
+
+**Usage:**
+
+```bash
+python manage.py update_lucide_icons
+```
+This will download the latest Lucide icon ZIP from GitHub and save it as lucide-latest.zip in your Django project’s root directory.
+
+## Using a Custom ZIP File (Settings Option)
+You can explicitly tell lucide which ZIP file to use by setting the following variable in your settings.py:
+```python
+import os
+LUCIDE_ICONS_ZIP_PATH = os.path.join(BASE_DIR, "lucide-latest.zip")
+```
+If this setting is provided and the file exists, lucide will always load icons from your specified ZIP file.
+
+If the file is missing or the setting is unset, lucide falls back to the built-in package ZIP.
+
 ## Acknowledgements
 
 This package is heavely inspired by [Adam Johnson's heroicons](https://github.com/adamchainz/heroicons). It's actually mostly copied from it so a huge thanks Adam!

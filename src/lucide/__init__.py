@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import functools
+import os
 from contextlib import closing
 from copy import deepcopy
 from xml.etree import ElementTree
@@ -14,9 +15,23 @@ class IconDoesNotExist(Exception):
     pass
 
 
+def _get_custom_zip_path():
+    try:
+        from django.conf import settings
+        return getattr(settings, "LUCIDE_ICONS_ZIP_PATH", None)
+    except ImportError:
+        return None
+
+
 @functools.lru_cache(maxsize=128)
 def _load_icon(name: str) -> ElementTree.Element:
-    zip_data = open_binary("lucide", "lucide.zip")
+    zip_path = _get_custom_zip_path()
+    if zip_path and os.path.exists(zip_path):
+        zip_data = open(zip_path, "rb")
+    else:
+        # Fallback: use the default embedded zip file
+        zip_data = open_binary("lucide", "lucide.zip")
+
     with closing(zip_data), ZipFile(zip_data, "r") as zip_file:
         try:
             svg_bytes = zip_file.read(f"{name}.svg")
@@ -25,10 +40,9 @@ def _load_icon(name: str) -> ElementTree.Element:
 
         svg = ElementTree.fromstring(svg_bytes.decode())
         for node in svg.iter():
-            # Prevent output using the 'ns0' prefix for tags
             node.tag = ElementTree.QName(
                 str_removeprefix(node.tag, "{http://www.w3.org/2000/svg}")
-            )  # type: ignore[assignment]  # unclear if really allowed
+            )
         return svg
 
 
