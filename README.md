@@ -1,20 +1,14 @@
-# lucide
-<p align="start">
-  <a href="https://github.com/franciscobmacedo/lucide">
-    <img src="https://raw.githubusercontent.com/franciscobmacedo/lucide/refs/heads/main/docs/images/logo.png" alt="Lucide - Beautiful & consistent icon toolkit made by the community. Open-source project and a fork of Feather Icons." width="200">
-  </a>
-</p>
-
-<a href="https://github.com/franciscobmacedo/lucide/actions?workflow=CI">
+# dj-lucide
+<a href="https://github.com/vidski/lucide/actions?workflow=CI">
     <img
         src="https://img.shields.io/github/actions/workflow/status/franciscobmacedo/lucide/main.yml.svg?branch=main&style=for-the-badge"
         alt="CI"
         style="max-width: 100%;"
     >
 </a>
-<a href="https://pypi.org/project/lucide/">
+<a href="https://pypi.org/project/dj-lucide/">
     <img
-        src="https://img.shields.io/pypi/v/lucide.svg?style=for-the-badge"
+        src="https://img.shields.io/pypi/v/dj-lucide.svg?style=for-the-badge"
         alt="pypi"
         style="max-width: 100%;"
     >
@@ -45,12 +39,12 @@ Django 3.2 to 5.0 supported.
 
 ## Usage
 
-The `lucide` package supports both Django templates and Jinja templates.
+The `dj-lucide` package supports both Django templates and Jinja templates.
 Follow the appropriate guide below.
 
 ### Django templates
 
-1.  Install with `python -m pip install lucide[django]`.
+1.  Install with `python -m pip install dj-lucide[django]`.
 
 2.  Add to your `INSTALLED_APPS`:
 
@@ -189,3 +183,4 @@ That icon again, but with the paths changed to a narrower stroke width, and a "d
 ## Acknowledgements
 
 This package is heavely inspired by [Adam Johnson's heroicons](https://github.com/adamchainz/heroicons). It's actually mostly copied from it so a huge thanks Adam!
+This package is forked from [Francisco Macedo's lucide](https://github.com/franciscobmacedo/lucide).
