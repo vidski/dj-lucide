@@ -1,3 +1,9 @@
+# Changelog
+## 1.1.4 (2025-07-28)
+
+* upgrade lucide icons version to 0.526.0
+* add custom lucide icons support in fs
+* added management command to update icons
 
 # Changelog
 ## 1.1.3 (2024-11-08)

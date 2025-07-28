@@ -1,1 +1,1 @@
-Please report security issues directly over email to me@fmacedo.com
+Please report security issues directly over email to dr@squies.de
