@@ -6,7 +6,7 @@ requires = [
 
 [project]
 name = "dj-lucide"
-version = "1.1.5"
+version = "1.1.8"
 description = "Use lucide in your Django and Jinja templates."
 readme = "README.md"
 keywords = [
@@ -25,6 +25,8 @@ classifiers = [
   "Framework :: Django :: 4.1",
   "Framework :: Django :: 4.2",
   "Framework :: Django :: 5.0",
+  "Framework :: Django :: 5.1",
+  "Framework :: Django :: 5.2",
   "Intended Audience :: Developers",
   "License :: OSI Approved :: MIT License",
   "Natural Language :: English",
@@ -35,6 +37,7 @@ classifiers = [
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
   "Programming Language :: Python :: Implementation :: CPython",
   "Typing :: Typed",
 ]
