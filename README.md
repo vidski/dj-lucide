@@ -33,9 +33,9 @@ Use [lucide icons](https://lucide.dev/) in your Django and Jinja templates.
 
 ## Requirements
 
-Python 3.8 to 3.12 supported.
+Python 3.8 to 3.13 supported.
 
-Django 3.2 to 5.0 supported.
+Django 3.2 to 5.2 supported.
 
 ## Usage
 
