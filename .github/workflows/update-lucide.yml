@@ -1,0 +1,99 @@
+name: Update Lucide (PR)
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 6 * * 1'  # Mondays 06:00 UTC
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: update-lucide
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    env:
+      DEFAULT_PY: "3.12"
+      BRANCH_NAME: "chore/update-lucide"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.DEFAULT_PY }}
+
+      - name: Install tooling
+        run: |
+          python -m pip install --upgrade pip
+          pip install tomlkit
+
+      - name: Update Lucide icons
+        run: |
+          python download_lucide_icons.py
+
+      - name: Detect changes
+        id: changes
+        run: |
+          if git status --porcelain | grep -q '^[AMDR]'; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Bump version (patch)
+        if: steps.changes.outputs.changed == 'true'
+        id: bump
+        run: |
+          python - << 'PY'
+          from pathlib import Path
+          import tomlkit
+          p = Path("pyproject.toml")
+          data = tomlkit.parse(p.read_text(encoding="utf-8"))
+          proj = data.get("project") or {}
+          ver = (proj.get("version") or "0.0.0").split(".")
+          while len(ver) < 3: ver.append("0")
+          ver[2] = str(int(ver[2]) + 1)
+          new_ver = ".".join(ver[:3])
+          proj["version"] = new_ver
+          data["project"] = proj
+          p.write_text(tomlkit.dumps(data), encoding="utf-8")
+          print(new_ver)
+          PY
+          echo "version=$(python - << 'PY'
+          import tomlkit;print(tomlkit.parse(open('pyproject.toml','r',encoding='utf-8').read())['project']['version'])
+          PY
+          )" >> "$GITHUB_OUTPUT"
+
+      - name: Create/update PR
+        if: steps.changes.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ env.BRANCH_NAME }}
+          delete-branch: false
+          title: "chore: update Lucide & bump version to v${{ steps.bump.outputs.version }}"
+          body: |
+            This automated PR updates Lucide icons and bumps the package version.
+
+            - Updated icons via `download_lucide_icons.py`
+            - Version bumped to **v${{ steps.bump.outputs.version }}** in `pyproject.toml`
+
+            Merge when CI is green.
+          commit-message: "chore: update Lucide icons & bump to v${{ steps.bump.outputs.version }}"
+          labels: |
+            dependencies
+            automated
+          signoff: false
+          draft: false
+
+      - name: No changes
+        if: steps.changes.outputs.changed != 'true'
+        run: echo "No Lucide update found. No PR created."
