@@ -52,25 +52,8 @@ jobs:
         if: steps.changes.outputs.changed == 'true'
         id: bump
         run: |
-          python - << 'PY'
-          from pathlib import Path
-          import tomlkit
-          p = Path("pyproject.toml")
-          data = tomlkit.parse(p.read_text(encoding="utf-8"))
-          proj = data.get("project") or {}
-          ver = (proj.get("version") or "0.0.0").split(".")
-          while len(ver) < 3: ver.append("0")
-          ver[2] = str(int(ver[2]) + 1)
-          new_ver = ".".join(ver[:3])
-          proj["version"] = new_ver
-          data["project"] = proj
-          p.write_text(tomlkit.dumps(data), encoding="utf-8")
-          print(new_ver)
-          PY
-          echo "version=$(python - << 'PY'
-          import tomlkit;print(tomlkit.parse(open('pyproject.toml','r',encoding='utf-8').read())['project']['version'])
-          PY
-          )" >> "$GITHUB_OUTPUT"
+          VERSION=$(python scripts/bump_version.py --type patch)
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
 
       - name: Create/update PR
         if: steps.changes.outputs.changed == 'true'
