@@ -25,7 +25,8 @@ jobs:
         - '3.10'
         - '3.11'
         - '3.12'
-
+        - '3.13'
+        - '3.14'
     steps:
     - uses: actions/checkout@v4
 
@@ -61,7 +62,7 @@ jobs:
 
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: '3.14'
 
       - name: Install dependencies
         run: python -m pip install --upgrade coverage[toml]
@@ -122,7 +123,7 @@ jobs:
       - name: set up python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: '3.14'
 
       - name: install
         run: pip install -U build
